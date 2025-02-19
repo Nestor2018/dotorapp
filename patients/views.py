@@ -26,9 +26,10 @@ def list_patients(request):
 
 # GET  /api/patients/pk => Detalle
 # PUT  /api/patients/pk => Modificación
+# DELETE  /api/patients/pk => Borrar
 
 
-@api_view(["GET", "PUT"])
+@api_view(["GET", "PUT", "DELETE"])
 def detail_patient(request, pk):
     try:
         patient = Patient.objects.get(id=pk)
@@ -41,4 +42,7 @@ def detail_patient(request, pk):
         serializer = PatientSerializer(patient, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    if request.method == "DELETE":
+        patient.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
