@@ -1,26 +1,45 @@
 from rest_framework.generics import (
-    ListCreateAPIView,
+    ListAPIView,
+    CreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 
-from .serializers import PatientSerializer
-from .models import Patient
+from .serializers import PatientSerializer, InsuranceSerializer, MedicalRecordSerializer
+from .models import Patient, Insurance, MedicalRecord
 
 
-# GET  /api/patients => list_patients
-# POST  /api/patients => create_patient
-
-
-class ListPatientsView(ListCreateAPIView):
+class ListPatientView(ListAPIView, CreateAPIView):
+    allowed_methods = ["GET", "POST"]
     serializer_class = PatientSerializer
     queryset = Patient.objects.all()
-
-
-# GET  /api/patients/pk => Detalle
-# PUT  /api/patients/pk => Modificación
-# DELETE  /api/patients/pk => Borrar
 
 
 class DetailPatientView(RetrieveUpdateDestroyAPIView):
+    allowed_methods = ["GET", "PUT", "DELETE"]
     serializer_class = PatientSerializer
     queryset = Patient.objects.all()
+
+
+class ListInsuranceView(ListAPIView, CreateAPIView):
+    allowed_methods = ["GET", "POST"]
+    serializer_class = InsuranceSerializer
+    queryset = Insurance.objects.all()
+
+
+class DetailInsuranceView(RetrieveUpdateDestroyAPIView):
+    allowed_methods = ["GET", "PUT", "DELETE"]
+    serializer_class = InsuranceSerializer
+    queryset = Insurance.objects.all()
+
+
+class ListMedicalRecordView(ListAPIView, CreateAPIView):
+    allowed_methods = ["GET", "POST"]
+    serializer_class = MedicalRecordSerializer
+    queryset = MedicalRecord.objects.all()
+
+
+class DetailMedicalRecordView(RetrieveUpdateDestroyAPIView):
+    allowed_methods = ["GET", "PUT", "DELETE"]
+    serializer_class = MedicalRecordSerializer
+    queryset = MedicalRecord.objects.all()
+
